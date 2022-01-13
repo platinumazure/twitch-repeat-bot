@@ -1,4 +1,7 @@
 const tmi = require("tmi.js");
+const Denque = require("denque");
+
+const recentMessagesByUser = {};
 
 const client = new tmi.Client({
     identity: {
@@ -13,11 +16,24 @@ client.connect();
 client.on("message", (channel, tags, message, self) => {
     if (self) { return; }
 
-    // "Alca: Hello, World!"
+    const username = tags.username;
+
     console.log(`${tags["display-name"]}: ${message}`);
 
+    if (!message.startsWith("!")) {
+        if (!Object.prototype.hasOwnProperty.call(recentMessagesByUser, username)) {
+            recentMessagesByUser[username] = new Denque([], { capacity: 10 });
+        }
+
+        recentMessagesByUser[username].unshift(message);
+    }
+
     if (message.toLowerCase().startsWith("!repeat")) {
-        client.say(channel, `Hi @${tags.username}, message received!`);
+        const whichMessage = 0;
+
+        const messageToRepeat = recentMessagesByUser[username].peekAt(whichMessage);
+
+        client.say(channel, `(repeating for ${username}) ${messageToRepeat}`);
     }
 });
 
