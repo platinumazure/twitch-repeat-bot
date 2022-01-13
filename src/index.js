@@ -29,11 +29,30 @@ client.on("message", (channel, tags, message, self) => {
     }
 
     if (message.toLowerCase().startsWith("!repeat")) {
-        const whichMessage = 0;
+        const messageWords = message.split(/\s+/);      // messageWords[0] = !repeat, messageWords[1] is number
+        let whichMessage = 0;
 
-        const messageToRepeat = recentMessagesByUser[username].peekAt(whichMessage);
+        if (messageWords.length > 1) {
+            const specifiedMessageNumber = Number.parseInt(messageWords[1]);
 
-        client.say(channel, `(repeating for ${username}) ${messageToRepeat}`);
+            if (!Number.isNaN(specifiedMessageNumber)) {
+                whichMessage = specifiedMessageNumber - 1;      // use 0 for first message, etc.
+            }
+        }
+
+        const recentMessages = recentMessagesByUser[username];
+
+        if (recentMessages) {
+            const messageToRepeat = recentMessages.peekAt(whichMessage);
+
+            if (messageToRepeat) {
+                client.say(channel, `(repeating for ${username}) ${messageToRepeat}`);
+            } else {
+                client.say(channel, `${username}, could not find message #${whichMessage + 1} to repeat`);
+            }
+        } else {
+            client.say(channel, `${username}, could not find any messages to repeat`);
+        }
     }
 });
 
