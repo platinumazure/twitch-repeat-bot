@@ -1,0 +1,14 @@
+{
+  "name": "twitch-repeat-bot",
+  "version": "1.0.0",
+  "description": "Twitch Chatbot for allowing viewers of Twitch streams to easily repeat messages the streamer may have missed",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "platinumazure",
+  "license": "MIT",
+  "dependencies": {
+    "tmi.js": "^1.8.5"
+  }
+}
