@@ -1,12 +1,12 @@
-const tmi = require('tmi.js');
+const tmi = require("tmi.js");
 
 const client = new tmi.Client({
-	channels: ['platinumazure']
+    channels: ["platinumazure"]
 });
 
 client.connect();
 
-client.on('message', (channel, tags, message, self) => {
-	// "Alca: Hello, World!"
-	console.log(`${tags['display-name']}: ${message}`);
+client.on("message", (channel, tags, message) => {
+    // "Alca: Hello, World!"
+    console.log(`${tags["display-name"]}: ${message}`);
 });

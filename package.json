@@ -10,5 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0"
   }
 }
