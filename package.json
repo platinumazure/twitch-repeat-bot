@@ -4,6 +4,7 @@
   "description": "Twitch Chatbot for allowing viewers of Twitch streams to easily repeat messages the streamer may have missed",
   "main": "src/index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "platinumazure",
