@@ -11,7 +11,7 @@ if (scriptArgs.length) {
 
 const client = new tmi.Client({
     identity: {
-        username: "platinumazure",
+        username: "twitchrepeatbot",
         password: process.env.TWITCH_REPEAT_BOT_SECRET
     },
     channels: [targetChannel]
