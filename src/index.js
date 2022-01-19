@@ -2,7 +2,12 @@ const tmi = require("tmi.js");
 const Denque = require("denque");
 
 const recentMessagesByUser = {};
-const targetChannel = "platinumazure";
+let targetChannel = "platinumazure";
+
+const scriptArgs = process.argv.slice(2);   // First two values are "node" and script path
+if (scriptArgs.length) {
+    targetChannel = scriptArgs[0];
+}
 
 const client = new tmi.Client({
     identity: {
