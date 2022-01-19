@@ -2,13 +2,14 @@ const tmi = require("tmi.js");
 const Denque = require("denque");
 
 const recentMessagesByUser = {};
+const targetChannel = "platinumazure";
 
 const client = new tmi.Client({
     identity: {
         username: "platinumazure",
         password: process.env.TWITCH_REPEAT_BOT_SECRET
     },
-    channels: ["platinumazure"]
+    channels: [targetChannel]
 });
 
 client.connect();
@@ -56,4 +57,4 @@ client.on("message", (channel, tags, message, self) => {
     }
 });
 
-console.log("twitch-repeat-bot: Successfully initialized");
+console.log(`twitch-repeat-bot: Successfully initialized, connected to ${targetChannel}`);
