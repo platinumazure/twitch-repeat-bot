@@ -16,7 +16,7 @@ client.on("connected", () => {
     console.log(`twitch-repeat-bot: Successfully initialized, connected to ${targetChannel}`);
 });
 
-client.on("message", (channel, tags, message, self) => {
+client.on("chat", (channel, tags, message, self) => {
     if (self) { return; }
 
     const username = tags.username;
