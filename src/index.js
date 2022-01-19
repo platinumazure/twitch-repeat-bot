@@ -12,7 +12,9 @@ const client = new tmi.Client({
     channels: [targetChannel]
 });
 
-client.connect();
+client.on("connected", () => {
+    console.log(`twitch-repeat-bot: Successfully initialized, connected to ${targetChannel}`);
+});
 
 client.on("message", (channel, tags, message, self) => {
     if (self) { return; }
@@ -57,4 +59,4 @@ client.on("message", (channel, tags, message, self) => {
     }
 });
 
-console.log(`twitch-repeat-bot: Successfully initialized, connected to ${targetChannel}`);
+client.connect();
