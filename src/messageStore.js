@@ -15,11 +15,15 @@ class MessageStore {
     }
 
     getMessage(username, whichMessage) {
+        if (whichMessage < 0) {
+            return null;
+        }
+
         const recentMessages = this.recentMessagesByUser[username];
 
         if (recentMessages) {
             const messageToRepeat = recentMessages.peekAt(whichMessage);
-            return messageToRepeat;
+            return messageToRepeat || null;
         }
 
         return null;
