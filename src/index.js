@@ -1,7 +1,6 @@
 const tmi = require("tmi.js");
-const Denque = require("denque");
+const MessageStore = require("./messageStore");
 
-const recentMessagesByUser = {};
 let targetChannel = "platinumazure";
 
 const scriptArgs = process.argv.slice(2);   // First two values are "node" and script path
@@ -17,6 +16,8 @@ const client = new tmi.Client({
     channels: [targetChannel]
 });
 
+const messageStore = new MessageStore();
+
 client.on("connected", () => {
     console.log(`twitch-repeat-bot: Successfully initialized, connected to ${targetChannel}`);
 });
@@ -29,11 +30,7 @@ client.on("chat", (channel, tags, message, self) => {
     console.log(`${tags["display-name"]}: ${message}`);
 
     if (!message.startsWith("!")) {
-        if (!Object.prototype.hasOwnProperty.call(recentMessagesByUser, username)) {
-            recentMessagesByUser[username] = new Denque([], { capacity: 10 });
-        }
-
-        recentMessagesByUser[username].unshift(message);
+        messageStore.addMessage(username, message);
     }
 
     if (message.toLowerCase().startsWith("!repeat")) {
@@ -48,18 +45,12 @@ client.on("chat", (channel, tags, message, self) => {
             }
         }
 
-        const recentMessages = recentMessagesByUser[username];
+        const messageToRepeat = messageStore.getMessage(username, whichMessage);
 
-        if (recentMessages) {
-            const messageToRepeat = recentMessages.peekAt(whichMessage);
-
-            if (messageToRepeat) {
-                client.say(channel, `(repeating for ${username}) ${messageToRepeat}`);
-            } else {
-                client.say(channel, `${username}, could not find message #${whichMessage + 1} to repeat`);
-            }
+        if (messageToRepeat) {
+            client.say(channel, `(repeating for ${username}) ${messageToRepeat}`);
         } else {
-            client.say(channel, `${username}, could not find any messages to repeat`);
+            client.say(channel, `${username}, could not find message #${whichMessage + 1} to repeat`);
         }
     }
 });
