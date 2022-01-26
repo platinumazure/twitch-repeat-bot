@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint"
+    "test": "npm run lint && mocha test/"
   },
   "author": "platinumazure",
   "license": "MIT",
