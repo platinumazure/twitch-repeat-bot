@@ -3,15 +3,15 @@ const Denque = require("denque");
 class MessageStore {
 
     constructor() {
-        this.recentMessagesByUser = {};
+        this.recentMessagesByUser = new Map();
     }
 
     addMessage(username, message) {
-        if (!Object.prototype.hasOwnProperty.call(this.recentMessagesByUser, username)) {
-            this.recentMessagesByUser[username] = new Denque([], { capacity: 10 });
+        if (!this.recentMessagesByUser.has(username)) {
+            this.recentMessagesByUser.set(username, new Denque([], { capacity: 10 }));
         }
 
-        this.recentMessagesByUser[username].unshift(message);
+        this.recentMessagesByUser.get(username).unshift(message);
     }
 
     getMessage(username, whichMessage) {
@@ -19,7 +19,7 @@ class MessageStore {
             return null;
         }
 
-        const recentMessages = this.recentMessagesByUser[username];
+        const recentMessages = this.recentMessagesByUser.get(username);
 
         if (recentMessages) {
             const messageToRepeat = recentMessages.peekAt(whichMessage);
