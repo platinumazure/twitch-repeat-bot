@@ -103,6 +103,15 @@ describe("MessageStore", function() {
             assert.strictEqual(result, null);
         });
 
+        it("should return null if messages are present but index is too high, because older messages were pruned", function() {
+            for (const i of Array(20).keys()) {
+                messageStore.addMessage("platinumazure", `test message ${i}`);
+            }
+
+            const result = messageStore.getMessage("platinumazure", 10);
+            assert.strictEqual(result, null);
+        });
+
         it("should return null if index is negative", function() {
             messageStore.addMessage("platinumazure", "test message");
 
